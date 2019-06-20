@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,31 +34,25 @@ public class PersonController {
 		this.personService = personService;
 	}
 
-	/*
-	 * @PostMapping public void addPerson(@RequestBody Person person) {
-	 * personService.addPerson(person); }
-	 */
-
 	@PostMapping
-	public void addPersons(@RequestBody String jsonString) {
-		final ObjectMapper mapper = new ObjectMapper();
-		JsonNode jsonObject = null;
-		
-		try {
-			jsonObject = mapper.readTree(jsonString);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if (jsonObject.isArray()) {
-			for (final JsonNode personJson : jsonObject) {
-				personService.addPerson(jsonNodeToPerson(personJson, mapper));
-			}
-		} else {
-			personService.addPerson(jsonNodeToPerson(jsonObject, mapper));
-		}
+	public void addPerson(@Valid @NonNull @RequestBody Person person) {
+		personService.addPerson(person);
 	}
+
+	/*
+	 * @PostMapping public void addPersons(@RequestBody @Valid @NonNull String
+	 * jsonString) { final ObjectMapper mapper = new ObjectMapper(); JsonNode
+	 * jsonObject = null;
+	 * 
+	 * try { jsonObject = mapper.readTree(jsonString); } catch (IOException e) { //
+	 * TODO Auto-generated catch block e.printStackTrace(); }
+	 * 
+	 * if (jsonObject.isArray()) { for (final JsonNode personJson : jsonObject) {
+	 * //personService.addPerson(jsonNodeToPerson(personJson, mapper));
+	 * addPerson(jsonNodeToPerson(personJson, mapper)); } } else {
+	 * //personService.addPerson(jsonNodeToPerson(jsonObject, mapper));
+	 * addPerson(jsonNodeToPerson(jsonObject, mapper)); } }
+	 */
 
 	private Person jsonNodeToPerson(JsonNode personJson, ObjectMapper mapper) {
 		Person person = null;
@@ -84,7 +81,7 @@ public class PersonController {
 	}
 
 	@PutMapping(path = "{id}")
-	public void updatePerson(@PathVariable("id") UUID id, @RequestBody Person personToUpdate) {
+	public void updatePerson(@PathVariable("id") UUID id, @Valid @NonNull @RequestBody Person personToUpdate) {
 		personService.updatePerson(id, personToUpdate);
 	}
 }
