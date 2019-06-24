@@ -54,16 +54,12 @@ public class PersonController {
 	 * addPerson(jsonNodeToPerson(jsonObject, mapper)); } }
 	 */
 
-	private Person jsonNodeToPerson(JsonNode personJson, ObjectMapper mapper) {
-		Person person = null;
-		try {
-			person = mapper.treeToValue(personJson, Person.class);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return person;
-	}
+	/*
+	 * private Person jsonNodeToPerson(JsonNode personJson, ObjectMapper mapper) {
+	 * Person person = null; try { person = mapper.treeToValue(personJson,
+	 * Person.class); } catch (JsonProcessingException e) { // TODO Auto-generated
+	 * catch block e.printStackTrace(); } return person; }
+	 */
 
 	@GetMapping
 	public List<Person> getAllPeople() {
